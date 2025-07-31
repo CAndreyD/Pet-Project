@@ -7,6 +7,11 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
     && docker-php-ext-install zip pdo pdo_mysql
+# Установка Xdebug  
+RUN pecl install xdebug \
+&& docker-php-ext-enable xdebug
+
+COPY ./docker/php/conf.d/ /usr/local/etc/php/conf.d/
 
 # Установка Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -22,5 +27,6 @@ COPY . .
 
 # Права на storage и bootstrap/cache
 RUN chown -R www-data:www-data storage bootstrap/cache
+RUN touch /tmp/xdebug.log && chown www-data:www-data /tmp/xdebug.log
 
 CMD ["php-fpm"]
