@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class ProductCrudTest extends TestCase
 {
-    use DatabaseMigrations, WithoutMiddleware;
+    use DatabaseMigrations;
     protected function setUp(): void
     {
         parent::setUp();
@@ -45,9 +45,10 @@ class ProductCrudTest extends TestCase
             'quantity' => 10,
         ];
 
+        // Принудительно укажи путь как строку
+        $url = '/product/' . $product->id;
         // Отправляем PUT-запрос на роут обновления продукта
-        $response = $this->put(route('product.update', $product), $updateData);
-
+        $response = $this->putJson($url, $updateData);
         // Проверяем редирект на индекс продуктов
         $response->assertRedirect(route('product.index'));
 

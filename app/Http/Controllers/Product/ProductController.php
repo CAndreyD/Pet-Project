@@ -62,7 +62,6 @@ class ProductController extends \App\Http\Controllers\Controller
      */
     public function update(Request $request, Product $product)
     {
-        \Log::info('Product from parameter', ['product' => $product]);
         //$product = Product::findOrFail($id); // сам найдёт или 404 // проставь public function update(Request $request, $id)
         $validated = $request->validate([
             'name' => 'required|string|max:255',
