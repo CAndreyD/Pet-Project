@@ -6,9 +6,9 @@
 ### MVP (основной API)
 - [+] CRUD: Product
 - [+] CRUD: Category (вложенные категории)
-- [ ] CRUD: Supplier
-- [ ] Shipments (приход товаров, дата + поставщик)
-- [ ] StockMovement (приход/расход)
+- [+] CRUD: Supplier
+- [+] Shipments (приход товаров, дата + поставщик)
+- [+] StockMovement (приход/расход)
 
 ### Аутентификация
 - [ ] JWT login/register
@@ -23,8 +23,8 @@
 - [ ] GitHub Actions (`php artisan test`, `phpstan`)
 
 ### Тесты
-- [ ] ProductTest: index/store/update
-- [ ] CategoryTest
+- [+] ProductCrudTest
+- [+] CategoryCrudTest
 - [ ] AuthTest
 
 ### Nice-to-have
