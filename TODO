@@ -11,7 +11,7 @@
 - [+] StockMovement (приход/расход)
 
 ### Аутентификация
-- [ ] JWT login/register
+- [+] JWT login/register
 - [ ] Middleware `admin` для защищённых маршрутов
 
 ### Документация
@@ -25,7 +25,10 @@
 ### Тесты
 - [+] ProductCrudTest
 - [+] CategoryCrudTest
-- [ ] AuthTest
+- [+] SupplierCrudTest
+- [+] ShipmentCrudTest
+- [+] StockMovementCrudTest
+- [+] AuthTest
 
 ### Nice-to-have
 - [ ] Импорт товаров из Excel (`PhpSpreadsheet`)

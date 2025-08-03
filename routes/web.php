@@ -1,3 +1,3 @@
 <?php
 
-collect(glob(__DIR__ . '/*/*.php'))->each(fn($file) => require $file);
+collect(glob(__DIR__ . '/web/*.php'))->each(fn($file) => require $file);

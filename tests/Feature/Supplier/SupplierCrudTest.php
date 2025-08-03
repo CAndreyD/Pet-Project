@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Supplier;
 
 use App\Models\Supplier;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -14,7 +14,7 @@ class SupplierCrudTest extends TestCase
     {
         Supplier::factory()->count(3)->create();
 
-        $response = $this->getJson('suppliers');
+        $response = $this->actingAsApiUser()->getJson('/api/suppliers');
 
         $response->assertStatus(200)
                  ->assertJsonStructure([
@@ -30,7 +30,7 @@ class SupplierCrudTest extends TestCase
     {
         $data = ['name' => 'Test Supplier'];
 
-        $response = $this->postJson('suppliers', $data);
+        $response = $this->actingAsApiUser()->postJson('/api/suppliers', $data);
 
         $response->assertStatus(201)
                  ->assertJsonFragment(['name' => 'Test Supplier']);
@@ -42,7 +42,7 @@ class SupplierCrudTest extends TestCase
     {
         $supplier = Supplier::factory()->create();
 
-        $response = $this->getJson("suppliers/{$supplier->id}");
+        $response = $this->actingAsApiUser()->getJson("/api/suppliers/{$supplier->id}");
 
         $response->assertStatus(200)
                  ->assertJsonFragment(['name' => $supplier->name]);
@@ -53,7 +53,7 @@ class SupplierCrudTest extends TestCase
         $supplier = Supplier::factory()->create(['name' => 'Old Name']);
         $data = ['name' => 'New Name'];
 
-        $response = $this->putJson("suppliers/{$supplier->id}", $data);
+        $response = $this->actingAsApiUser()->putJson("/api/suppliers/{$supplier->id}", $data);
 
         $response->assertStatus(200)
                  ->assertJsonFragment(['name' => 'New Name']);
@@ -65,7 +65,7 @@ class SupplierCrudTest extends TestCase
     {
         $supplier = Supplier::factory()->create();
 
-        $response = $this->deleteJson("suppliers/{$supplier->id}");
+        $response = $this->actingAsApiUser()->deleteJson("/api/suppliers/{$supplier->id}");
 
         $response->assertStatus(200)
                  ->assertJson(['message' => 'Deleted']);

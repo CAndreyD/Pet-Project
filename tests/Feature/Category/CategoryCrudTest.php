@@ -14,7 +14,7 @@ class CategoryCrudTest extends TestCase
     {
         Category::factory()->count(3)->create();
 
-        $response = $this->getJson('/categories');
+        $response = $this->actingAsApiUser()->getJson('/api/categories');
 
         $response->assertStatus(200)
             ->assertJsonStructure(['data', 'links', 'meta']);
@@ -27,7 +27,7 @@ class CategoryCrudTest extends TestCase
             'parent_id' => null,
         ];
 
-        $response = $this->postJson('/categories', $payload);
+        $response = $this->actingAsApiUser()->postJson('/api/categories', $payload);
 
         $response->assertStatus(201)
             ->assertJsonFragment(['name' => 'Новая категория']);
@@ -40,7 +40,7 @@ class CategoryCrudTest extends TestCase
         $parent = Category::factory()->create(['name' => 'Родитель']);
         $child = Category::factory()->create(['parent_id' => $parent->id]);
 
-        $response = $this->getJson("categories/{$parent->id}");
+        $response = $this->actingAsApiUser()->getJson("/api/categories/{$parent->id}");
 
         $response->assertStatus(200)
             ->assertJsonFragment(['name' => 'Родитель'])
@@ -56,7 +56,7 @@ class CategoryCrudTest extends TestCase
             'parent_id' => null,
         ];
 
-        $response = $this->putJson("categories/{$category->id}", $payload);
+        $response = $this->actingAsApiUser()->putJson("/api/categories/{$category->id}", $payload);
 
         $response->assertStatus(200)
             ->assertJsonFragment(['name' => 'Обновлённая категория']);
@@ -68,7 +68,7 @@ class CategoryCrudTest extends TestCase
     {
         $category = Category::factory()->create();
 
-        $response = $this->deleteJson("categories/{$category->id}");
+        $response = $this->actingAsApiUser()->deleteJson("/api/categories/{$category->id}");
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Категория удалена']);

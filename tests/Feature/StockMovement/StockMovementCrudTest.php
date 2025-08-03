@@ -15,7 +15,7 @@ class StockMovementCrudTest extends TestCase
     {
         $product = Product::factory()->create();
 
-        $response = $this->postJson('stock-movements', [
+        $response = $this->actingAsApiUser()->postJson('/api/stock-movements', [
             'product_id' => $product->id,
             'type' => 'in',
             'quantity' => 10,
@@ -29,7 +29,7 @@ class StockMovementCrudTest extends TestCase
     {
         StockMovement::factory()->count(5)->create();
 
-        $response = $this->getJson('stock-movements');
+        $response = $this->actingAsApiUser()->getJson('/api/stock-movements');
 
         $response->assertOk()->assertJsonStructure(['data']);
     }

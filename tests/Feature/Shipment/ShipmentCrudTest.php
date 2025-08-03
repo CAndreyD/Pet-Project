@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Shipment;
 
 use App\Models\Shipment;
 use App\Models\Supplier;
@@ -17,7 +17,7 @@ class ShipmentCrudTest extends TestCase
     {
         Shipment::factory()->count(3)->create();
 
-        $response = $this->getJson('shipments');
+        $response = $this->actingAsApiUser()->getJson('/api/shipments');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -51,7 +51,7 @@ class ShipmentCrudTest extends TestCase
             ],
         ];
 
-        $response = $this->postJson('shipments', $payload);
+        $response = $this->actingAsApiUser()->postJson('/api/shipments', $payload);
 
         $response->assertStatus(201)
             ->assertJsonPath('supplier.id', $supplier->id)
@@ -82,7 +82,7 @@ class ShipmentCrudTest extends TestCase
 
         $shipment->load('supplier', 'products');
 
-        $response = $this->getJson("shipments/{$shipment->id}");
+        $response = $this->actingAsApiUser()->getJson("/api/shipments/{$shipment->id}");
 
         $response->assertStatus(200)
             ->assertJsonFragment(['id' => $shipment->id]);
@@ -105,7 +105,7 @@ class ShipmentCrudTest extends TestCase
             ],
         ];
 
-        $response = $this->putJson("shipments/{$shipment->id}", $payload);
+        $response = $this->actingAsApiUser()->putJson("/api/shipments/{$shipment->id}", $payload);
 
         $response->assertStatus(200)
             ->assertJson(
@@ -136,7 +136,7 @@ class ShipmentCrudTest extends TestCase
     {
         $shipment = Shipment::factory()->create();
 
-        $response = $this->deleteJson("shipments/{$shipment->id}");
+        $response = $this->actingAsApiUser()->deleteJson("/api/shipments/{$shipment->id}");
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Shipment deleted']);
