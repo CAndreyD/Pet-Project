@@ -12,7 +12,7 @@
 
 ### Аутентификация
 - [+] JWT login/register
-- [ ] Middleware `admin` для защищённых маршрутов
+- [+] Middleware `admin` для защищённых маршрутов
 
 ### Документация
 - [ ] Swagger/OpenAPI через `l5-swagger`
