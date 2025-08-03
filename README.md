@@ -21,7 +21,7 @@ REST API для управления товарами, категориями и
 ## ⚙️ Установка
 
 ```bash
-git clone https://github.com/yourname/warehouse-api.git
+git clone https://github.com/CAndreyD/warehouse-api.git
 cd warehouse-api
 cp .env.example .env
 docker-compose up -d --build

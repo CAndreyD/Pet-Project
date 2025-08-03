@@ -1,4 +1,4 @@
 <?php
-use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Api\ProductController;
 
-Route::resource('product', ProductController::class);
+Route::resource('products', ProductController::class);
