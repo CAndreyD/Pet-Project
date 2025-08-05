@@ -1,0 +1,1322 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Warehouse API",
+        "description": "Документация API для склада",
+        "contact": {
+            "email": "support@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Получить список категорий",
+                "operationId": "getCategories",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Category"
+                                            }
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Создать категорию",
+                "operationId": "createCategory",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoryCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Создано",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/categories/{id}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Получить категорию по ID",
+                "operationId": "70bf5d61870d8f5cfb37fb3c40065e18",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID категории",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные категории",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Категория не найдена"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Обновить категорию",
+                "operationId": "12982bbd742328492b8aa2ca88de1a30",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID категории",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CategoryUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Обновлённая категория",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Category"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    },
+                    "404": {
+                        "description": "Категория не найдена"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Удалить категорию",
+                "operationId": "5ca99ed930c1d43f85487f36881732a2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID категории",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Удалена"
+                    },
+                    "404": {
+                        "description": "Категория не найдена"
+                    }
+                }
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Получить список продуктов",
+                "operationId": "getProducts",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Product"
+                                            }
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Создать продукт",
+                "operationId": "createProduct",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Создан",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Получить продукт по ID",
+                "operationId": "getProductById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID продукта",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные продукта",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Продукт не найден"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Обновить продукт",
+                "operationId": "updateProduct",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID продукта",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Обновлённый продукт",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    },
+                    "404": {
+                        "description": "Продукт не найден"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Удалить продукт",
+                "operationId": "deleteProduct",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID продукта",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Удалён продукт"
+                    },
+                    "404": {
+                        "description": "Продукт не найден"
+                    }
+                }
+            }
+        },
+        "/api/shipments": {
+            "get": {
+                "tags": [
+                    "Shipments"
+                ],
+                "summary": "Получить список отгрузок",
+                "operationId": "getShipments",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Shipment"
+                                            }
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Shipments"
+                ],
+                "summary": "Создать отгрузку",
+                "operationId": "createShipment",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShipmentCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Создано",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Shipment"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/shipments/{id}": {
+            "get": {
+                "tags": [
+                    "Shipments"
+                ],
+                "summary": "Получить отгрузку по ID",
+                "operationId": "ad6c4175543ebcd8f7d5636d93d35e5d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID отгрузки",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные отгрузки",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Shipment"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Отгрузка не найдена"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Shipments"
+                ],
+                "summary": "Обновить отгрузку",
+                "operationId": "0dd25eadb5e54baecacfaf19a4b906a9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID отгрузки",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShipmentUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Обновлённая отгрузка",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Shipment"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    },
+                    "404": {
+                        "description": "Отгрузка не найдена"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Shipments"
+                ],
+                "summary": "Удалить отгрузку",
+                "operationId": "64314bd65dfcd7baa06347b4101fcea7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID отгрузки",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Удалена"
+                    },
+                    "404": {
+                        "description": "Отгрузка не найдена"
+                    }
+                }
+            }
+        },
+        "/api/stock-movements": {
+            "get": {
+                "tags": [
+                    "StockMovements"
+                ],
+                "summary": "Получить список перемещений",
+                "operationId": "getStockMovements",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/StockMovement"
+                                            }
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "StockMovements"
+                ],
+                "summary": "Создать перемещение",
+                "operationId": "createStockMovement",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StockMovementCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Создано",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StockMovement"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/stock-movements/{id}": {
+            "get": {
+                "tags": [
+                    "StockMovements"
+                ],
+                "summary": "Получить перемещение по ID",
+                "operationId": "6b8584e7f288a01fcddbdff21d9dacf7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID перемещения",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные перемещения",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StockMovement"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Перемещение не найдено"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "StockMovements"
+                ],
+                "summary": "Обновить перемещение",
+                "operationId": "a31d211f9fbb8744ae83ac9b5eed1952",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID перемещения",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StockMovementUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Обновлённое перемещение",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StockMovement"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    },
+                    "404": {
+                        "description": "Перемещение не найдено"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "StockMovements"
+                ],
+                "summary": "Удалить перемещение",
+                "operationId": "a7ed79627850475ece121eb8df775f16",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID перемещения",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Удалено"
+                    },
+                    "404": {
+                        "description": "Перемещение не найдено"
+                    }
+                }
+            }
+        },
+        "/api/suppliers": {
+            "get": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "summary": "Получить список поставщиков",
+                "operationId": "getSuppliers",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Номер страницы",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешный ответ",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Supplier"
+                                            }
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "summary": "Создать поставщика",
+                "operationId": "createSupplier",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupplierCreateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Создано",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Supplier"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/suppliers/{id}": {
+            "get": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "summary": "Получить поставщика по ID",
+                "operationId": "2f4e6d4fbff05acae3de20512d249872",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID поставщика",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Данные поставщика",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Supplier"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Поставщик не найден"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "summary": "Обновить поставщика",
+                "operationId": "d6db7e64b9987711f9fdc76d78b58025",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID поставщика",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SupplierUpdateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Обновлённый поставщик",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Supplier"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Ошибка валидации"
+                    },
+                    "404": {
+                        "description": "Поставщик не найден"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Suppliers"
+                ],
+                "summary": "Удалить поставщика",
+                "operationId": "59f32a54457dd7b20c5710c915d18614",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID поставщика",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Удалён"
+                    },
+                    "404": {
+                        "description": "Поставщик не найден"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Category": {
+                "title": "Категория",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Электроника"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Категория товаров электроники",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryCreateRequest": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Электроника"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Описание категории",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "CategoryUpdateRequest": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Электроника"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Обновленное описание",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Product": {
+                "description": "Product model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "iPhone 16"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 1499.99
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-05T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-05T12:30:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductCreateRequest": {
+                "required": [
+                    "name",
+                    "price"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "iPhone 16"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 1499.99
+                    }
+                },
+                "type": "object"
+            },
+            "ProductListResponse": {
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Product"
+                        }
+                    },
+                    "meta": {
+                        "properties": {
+                            "current_page": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "last_page": {
+                                "type": "integer",
+                                "example": 10
+                            },
+                            "per_page": {
+                                "type": "integer",
+                                "example": 15
+                            },
+                            "total": {
+                                "type": "integer",
+                                "example": 150
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductUpdateRequest": {
+                "description": "Request schema for updating a product",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "iPhone 16 Pro"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 1599.99
+                    }
+                },
+                "type": "object"
+            },
+            "Shipment": {
+                "title": "Отгрузка",
+                "required": [
+                    "id",
+                    "supplier_id",
+                    "shipment_date"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "supplier_id": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "shipment_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-08-05"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "В пути",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "ShipmentCreateRequest": {
+                "required": [
+                    "supplier_id",
+                    "shipment_date"
+                ],
+                "properties": {
+                    "supplier_id": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "shipment_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-08-05"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "В пути",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "ShipmentUpdateRequest": {
+                "required": [
+                    "supplier_id",
+                    "shipment_date"
+                ],
+                "properties": {
+                    "supplier_id": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "shipment_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-08-06"
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "Доставлено",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "StockMovement": {
+                "title": "Перемещение на складе",
+                "required": [
+                    "id",
+                    "product_id",
+                    "quantity",
+                    "movement_date"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product_id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "movement_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-05T14:30:00Z"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "приход",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "StockMovementCreateRequest": {
+                "required": [
+                    "product_id",
+                    "quantity",
+                    "movement_date"
+                ],
+                "properties": {
+                    "product_id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "movement_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-05T14:30:00Z"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "приход",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "StockMovementUpdateRequest": {
+                "required": [
+                    "product_id",
+                    "quantity",
+                    "movement_date"
+                ],
+                "properties": {
+                    "product_id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "movement_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-08-06T14:30:00Z"
+                    },
+                    "type": {
+                        "type": "string",
+                        "example": "расход",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Supplier": {
+                "title": "Поставщик",
+                "required": [
+                    "id",
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Поставщик ООО"
+                    },
+                    "contact_email": {
+                        "type": "string",
+                        "example": "contact@supplier.com",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "SupplierCreateRequest": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Поставщик ООО"
+                    },
+                    "contact_email": {
+                        "type": "string",
+                        "example": "contact@supplier.com",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "SupplierUpdateRequest": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "Поставщик ООО"
+                    },
+                    "contact_email": {
+                        "type": "string",
+                        "example": "newcontact@supplier.com",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Categories",
+            "description": "API для управления категориями"
+        },
+        {
+            "name": "Products",
+            "description": "API для управления продуктами"
+        },
+        {
+            "name": "Shipments",
+            "description": "API для управления отгрузками"
+        },
+        {
+            "name": "StockMovements",
+            "description": "API для управления перемещениями на складе"
+        },
+        {
+            "name": "Suppliers",
+            "description": "API для управления поставщиками"
+        }
+    ]
+}

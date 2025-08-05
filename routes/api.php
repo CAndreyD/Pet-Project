@@ -9,3 +9,6 @@ collect(glob(__DIR__ . '/api/public/**/*.php'))->each(fn($file) => require $file
 Route::middleware('auth:api')->group(function () {
     collect(glob(__DIR__ . '/api/guarded/*/*.php'))->each(fn($file) => require $file);
 });
+Route::get('/documentation', function () {
+    return redirect('/api/documentation');
+});

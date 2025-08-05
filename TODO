@@ -4,36 +4,38 @@
 ## 📌 Backlog задач
 
 ### MVP (основной API)
-- [+] CRUD: Product
-- [+] CRUD: Category (вложенные категории)
-- [+] CRUD: Supplier
-- [+] Shipments (приход товаров, дата + поставщик)
-- [+] StockMovement (приход/расход)
+- [✔] CRUD: Product
+- [✔] CRUD: Category (вложенные категории)
+- [✔] CRUD: Supplier
+- [✔] Shipments (приход товаров, дата + поставщик)
+- [✔] StockMovement (приход/расход)
 
 ### Аутентификация
-- [+] JWT login/register
-- [+] Middleware `admin` для защищённых маршрутов
+- [✔] JWT login/register
+- [✔] Middleware `admin` для защищённых маршрутов
 
 ### Документация
-- [ ] Swagger/OpenAPI через `l5-swagger`
-- [ ] Отдельный маршрут для документации `/api/documentation`
+- [✔] Swagger/OpenAPI через `l5-swagger`
+- [✔] Отдельный маршрут для документации `/api/documentation`
 
 ### DevOps
-- [ ] Dockerfile + nginx + mysql
+- [✔] Dockerfile + nginx + mysql
 - [ ] GitHub Actions (`php artisan test`, `phpstan`)
 
 ### Тесты
-- [+] ProductCrudTest
-- [+] CategoryCrudTest
-- [+] SupplierCrudTest
-- [+] ShipmentCrudTest
-- [+] StockMovementCrudTest
-- [+] AuthTest
+- [✔] ProductCrudTest
+- [✔] CategoryCrudTest
+- [✔] SupplierCrudTest
+- [✔] ShipmentCrudTest
+- [✔] StockMovementCrudTest
+- [✔] AuthTest
+- [✔] AdminOnlyControllerTest
 
 ### Nice-to-have
 - [ ] Импорт товаров из Excel (`PhpSpreadsheet`)
 - [ ] Логирование действий (приход/расход)
 - [ ] Интеграция Telegram уведомлений о новых поставках
+- [ ] Линты
 
   
 

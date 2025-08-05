@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Services\Product\ProductService;
 use Illuminate\Http\JsonResponse;
 
+
 class ProductController extends Controller
 {
     public function __construct(private ProductService $productService)
