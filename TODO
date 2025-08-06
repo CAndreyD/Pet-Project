@@ -20,7 +20,7 @@
 
 ### DevOps
 - [✔] Dockerfile + nginx + mysql
-- [ ] GitHub Actions (`php artisan test`, `phpstan`)
+- [✔] GitHub Actions (`php artisan test`, `phpstan`)
 
 ### Тесты
 - [✔] ProductCrudTest

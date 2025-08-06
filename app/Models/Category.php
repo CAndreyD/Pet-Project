@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Category extends Model
 {
     use HasFactory;
+    const MAX_DEPTH = 3;
     protected $guarded = [];
     public function parent()
     {
@@ -29,5 +30,22 @@ class Category extends Model
     {
         return $this->children()->with('childrenRecursive');
     }
+    public static function calculateDepth(?int $parentId): int
+    {
+        $depth = 0;
+
+        while ($parentId !== null) {
+            $parent = self::find($parentId);
+            if (!$parent)
+                break;
+
+            $depth++;
+            $parentId = $parent->parent_id;
+        }
+
+        return $depth;
+    }
+
+
 
 }

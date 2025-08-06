@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // 👇 Вот это добавь
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'check.token.version' => \App\Http\Middleware\CheckTokenVersion::class,
         ]);
     })
 

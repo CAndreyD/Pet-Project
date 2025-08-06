@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Services\Auth\AuthService;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -81,6 +82,15 @@ class AuthController extends Controller
         ]);
     }
 
+    public function logoutAllDevices(Request $request)
+    {
+        $user = auth()->user();
+
+        $this->authService->revokeAllAccessTokens($user); // 🔥 Убить все access токены
+        $this->authService->revokeAllUserRefreshTokens($user); // 🧹 Очистить refresh токены
+
+        return response()->json(['message' => 'Logged out from all devices']);
+    }
 
     protected function respondWithToken($token)
     {

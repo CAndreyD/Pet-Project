@@ -23,6 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'is_admin',
+        'token_version',
     ];
 
     /**
@@ -60,6 +61,9 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'token_version' => $this->token_version,
+        ];
     }
+
 }
