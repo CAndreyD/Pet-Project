@@ -11,7 +11,7 @@ REST API для управления товарами, категориями и
 - Тесты (PHPUnit) +
 
 ## 🧱 Технологии
-- Laravel 12
+- Laravel Framework 12.21.0
 - MySQL 8
 - Docker + Docker Compose
 - JWT
@@ -27,7 +27,19 @@ cp .env.example .env
 docker-compose up -d --build
 docker exec -it warehouse-api-php composer install
 docker exec -it warehouse-api-php php artisan migrate
-
+```
 ## зайти в докер
 ```bash
 docker exec -it warehouse-api-app-1 bash
+
+```
+
+#Тесты
+```bash
+docker exec -it warehouse-api-php php artisan test
+
+#Пересобрать app
+```bash
+DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1 docker compose build app
+
+```

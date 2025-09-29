@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Auth;
 
 use App\Models\RefreshToken;
@@ -38,12 +39,17 @@ class AuthService
                 ]);
                 return false;
             }
+
+            // Получаем пользователя напрямую через JWTAuth
+            $user = JWTAuth::user(); // или auth('api')->user() если guard настроен
+
             Log::info('Successful login', [
-                'user_id' => auth()->id(),
+                'user_id' => $user->id ?? null,
                 'email' => $credentials['email'],
                 'ip' => request()->ip(),
                 'time' => now()->toDateTimeString(),
             ]);
+
             return $token;
         } catch (JWTException $e) {
             Log::error('JWTException on login', [

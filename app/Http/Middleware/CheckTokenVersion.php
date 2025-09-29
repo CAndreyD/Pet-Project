@@ -11,8 +11,8 @@ class CheckTokenVersion
 {
     public function handle(Request $request, Closure $next)
     {
-        $user = auth()->user();
-        $payload = JWTAuth::getPayload();
+        $user = JWTAuth::parseToken()->authenticate(); // <- обязательно через JWTAuth
+        $payload = JWTAuth::parseToken()->getPayload();
 
         if ($payload->get('token_version') !== $user->token_version) {
             throw new UnauthorizedHttpException('jwt-auth', 'Token revoked');
@@ -21,3 +21,4 @@ class CheckTokenVersion
         return $next($request);
     }
 }
+

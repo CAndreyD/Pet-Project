@@ -9,13 +9,34 @@ services:
       - ./:/var/www
     ports:
       - "9000:9000"  # PHP-FPM
+      - "8000:8000"
     networks:
       - backend
     environment:
-      XDEBUG_MODE: debug,develop
+      XDEBUG_MODE: debug #,develop
       XDEBUG_CONFIG: "client_host=host.docker.internal client_port=9003"
       PHP_IDE_CONFIG: "serverName=laravel-app"
+    depends_on:
+      - redis
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    networks:
+      - backend
+    ports:
+      - "6379:6379"
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - ./:/var/www
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "5173:5173" # порт dev сервера фронта
+    networks:
+      - backend
   nginx:
     image: nginx:latest
     ports:

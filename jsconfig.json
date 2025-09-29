@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "types": ["vue"],
+    "jsx": "preserve"
+  },
+  "include": ["resources/js/**/*", "resources/js/**/*.vue"]
+}

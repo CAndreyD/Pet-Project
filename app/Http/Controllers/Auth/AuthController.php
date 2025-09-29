@@ -15,9 +15,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    public function __construct(protected AuthService $authService)
-    {
-    }
+    public function __construct(protected AuthService $authService) {}
 
     public function register(RegisterRequest $request)
     {
@@ -82,15 +80,15 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logoutAllDevices(Request $request)
-    {
-        $user = auth()->user();
+    // public function logoutAllDevices(Request $request)
+    // {
+    //     $user = auth()->user();
 
-        $this->authService->revokeAllAccessTokens($user); // 🔥 Убить все access токены
-        $this->authService->revokeAllUserRefreshTokens($user); // 🧹 Очистить refresh токены
+    //     $this->authService->revokeAllAccessTokens($user); // 🔥 Убить все access токены
+    //     $this->authService->revokeAllUserRefreshTokens($user); // 🧹 Очистить refresh токены
 
-        return response()->json(['message' => 'Logged out from all devices']);
-    }
+    //     return response()->json(['message' => 'Logged out from all devices']);
+    // }
 
     protected function respondWithToken($token)
     {
@@ -99,5 +97,15 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => JWTAuth::factory()->getTTL() * 60,
         ]);
+    }
+
+    public function me()
+    {
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            return response()->json($user);
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(['error' => 'Token invalid or expired'], 401);
+        }
     }
 }
