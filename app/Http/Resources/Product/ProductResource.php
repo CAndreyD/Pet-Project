@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Resources\Product;
 
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -10,6 +11,10 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'category' => $this->category ? [
+                'id' => $this->category->id,
+                'name' => $this->category->name
+            ] : null,
             'description' => $this->description,
             'price' => $this->price,
             'quantity' => $this->quantity,

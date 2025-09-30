@@ -11,10 +11,19 @@ use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
+/**
+ * Сервис аутентификации.
+ *
+ * Отвечает за регистрацию, логин, выход, обновление токенов,
+ * работу с refresh токенами и сброс пароля.
+ */
 class AuthService
 {
     /**
-     * Регистрация пользователя + хэширование пароля
+     * Регистрация пользователя с хэшированием пароля.
+     *
+     * @param array $data ['name' => string, 'email' => string, 'password' => string]
+     * @return User
      */
     public function register(array $data): User
     {
@@ -26,7 +35,10 @@ class AuthService
     }
 
     /**
-     * Попытка логина, возвращает JWT токен или false
+     * Попытка логина, возвращает JWT токен или false.
+     *
+     * @param array $credentials ['email' => string, 'password' => string]
+     * @return string|false
      */
     public function login(array $credentials): string|false
     {
@@ -40,8 +52,7 @@ class AuthService
                 return false;
             }
 
-            // Получаем пользователя напрямую через JWTAuth
-            $user = JWTAuth::user(); // или auth('api')->user() если guard настроен
+            $user = JWTAuth::user(); 
 
             Log::info('Successful login', [
                 'user_id' => $user->id ?? null,
@@ -63,7 +74,9 @@ class AuthService
     }
 
     /**
-     * Логаут - инвалидируем токен
+     * Логаут пользователя - инвалидирует текущий JWT токен.
+     *
+     * @return void
      */
     public function logout(): void
     {
@@ -71,7 +84,9 @@ class AuthService
     }
 
     /**
-     * Обновить JWT токен
+     * Обновить текущий JWT токен.
+     *
+     * @return string Новый access токен
      */
     public function refreshToken(): string
     {
@@ -79,7 +94,9 @@ class AuthService
     }
 
     /**
-     * Получить текущего пользователя из токена
+     * Получить текущего пользователя из токена.
+     *
+     * @return User|null
      */
     public function user(): ?User
     {
@@ -91,7 +108,10 @@ class AuthService
     }
 
     /**
-     * Отправить ссылку для сброса пароля
+     * Отправить ссылку для сброса пароля на email.
+     *
+     * @param string $email
+     * @return string Статус отправки
      */
     public function sendResetLink(string $email)
     {
@@ -99,7 +119,10 @@ class AuthService
     }
 
     /**
-     * Сбросить пароль по токену сброса
+     * Сбросить пароль по токену сброса.
+     *
+     * @param array $data ['token' => string, 'email' => string, 'password' => string, 'password_confirmation' => string]
+     * @return string Статус сброса пароля
      */
     public function resetPassword(array $data)
     {
@@ -116,8 +139,12 @@ class AuthService
         );
     }
 
-
-
+    /**
+     * Генерирует новый refresh токен для пользователя.
+     *
+     * @param User $user
+     * @return RefreshToken
+     */
     public function generateRefreshToken(User $user): RefreshToken
     {
         return RefreshToken::create([
@@ -127,25 +154,57 @@ class AuthService
         ]);
     }
 
+    /**
+     * Получить действительный refresh токен по строке.
+     *
+     * @param string $token
+     * @return RefreshToken|null
+     */
     public function getValidRefreshToken(string $token): ?RefreshToken
     {
         $refreshToken = RefreshToken::where('token', $token)->first();
         return $refreshToken && $refreshToken->isValid() ? $refreshToken : null;
     }
 
+    /**
+     * Отозвать refresh токен.
+     *
+     * @param string $token
+     * @return void
+     */
     public function revokeRefreshToken(string $token): void
     {
         RefreshToken::where('token', $token)->update(['revoked' => true]);
     }
+
+    /**
+     * Отозвать все refresh токены пользователя.
+     *
+     * @param User $user
+     * @return void
+     */
     public function revokeAllUserRefreshTokens(User $user): void
     {
         RefreshToken::where('user_id', $user->id)->update(['revoked' => true]);
     }
+
+    /**
+     * Инкремент версии токена пользователя, что приведет к отзыву всех access токенов.
+     *
+     * @param User $user
+     * @return void
+     */
     public function revokeAllAccessTokens(User $user): void
     {
         $user->increment('token_version');
     }
 
+    /**
+     * Обновление access и refresh токена по старому refresh токену.
+     *
+     * @param string $refreshToken
+     * @return array{access_token: string, refresh_token: string}|false
+     */
     public function refreshTokens(string $refreshToken): array|false
     {
         $record = RefreshToken::where('token', $refreshToken)->first();

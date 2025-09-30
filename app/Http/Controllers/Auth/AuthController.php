@@ -9,15 +9,31 @@ use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Services\Auth\AuthService;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Http\JsonResponse;
 
+/**
+ * Контроллер аутентификации.
+ *
+ * Обрабатывает регистрацию, вход, выход, обновление токена и восстановление пароля.
+ */
 class AuthController extends Controller
 {
+    /**
+     * AuthController constructor.
+     *
+     * @param AuthService $authService Сервис для работы с аутентификацией
+     */
     public function __construct(protected AuthService $authService) {}
 
-    public function register(RegisterRequest $request)
+    /**
+     * Регистрация нового пользователя.
+     *
+     * @param RegisterRequest $request Валидированные данные регистрации
+     * @return JsonResponse
+     */
+    public function register(RegisterRequest $request): JsonResponse
     {
         $user = $this->authService->register($request->validated());
         $token = JWTAuth::fromUser($user);
@@ -30,8 +46,13 @@ class AuthController extends Controller
         ], 201);
     }
 
-
-    public function login(LoginRequest $request)
+    /**
+     * Вход пользователя (логин).
+     *
+     * @param LoginRequest $request Валидированные данные для входа
+     * @return JsonResponse
+     */
+    public function login(LoginRequest $request): JsonResponse
     {
         if (!$token = $this->authService->login($request->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -40,21 +61,38 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    public function logout()
+    /**
+     * Выход пользователя (удаление текущего токена).
+     *
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
     {
         $this->authService->logout();
 
         return response()->json(['message' => 'Successfully logged out']);
     }
 
-    public function refresh()
+    /**
+     * Обновление access токена.
+     *
+     * @return JsonResponse
+     */
+    public function refresh(): JsonResponse
     {
         $token = $this->authService->refreshToken();
 
         return $this->respondWithToken($token);
     }
 
-    public function sendResetLinkEmail(ForgotPasswordRequest $request)
+    /**
+     * Отправка ссылки для сброса пароля на email.
+     *
+     * @param ForgotPasswordRequest $request Валидированный email
+     * @return JsonResponse
+     * @throws ValidationException
+     */
+    public function sendResetLinkEmail(ForgotPasswordRequest $request): JsonResponse
     {
         $status = $this->authService->sendResetLink($request->input('email'));
 
@@ -67,7 +105,14 @@ class AuthController extends Controller
         ]);
     }
 
-    public function resetPassword(ResetPasswordRequest $request)
+    /**
+     * Сброс пароля по ссылке.
+     *
+     * @param ResetPasswordRequest $request Валидированные данные для сброса
+     * @return JsonResponse
+     * @throws ValidationException
+     */
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         $status = $this->authService->resetPassword($request->validated());
 
@@ -80,17 +125,13 @@ class AuthController extends Controller
         ]);
     }
 
-    // public function logoutAllDevices(Request $request)
-    // {
-    //     $user = auth()->user();
-
-    //     $this->authService->revokeAllAccessTokens($user); // 🔥 Убить все access токены
-    //     $this->authService->revokeAllUserRefreshTokens($user); // 🧹 Очистить refresh токены
-
-    //     return response()->json(['message' => 'Logged out from all devices']);
-    // }
-
-    protected function respondWithToken($token)
+    /**
+     * Формирование ответа с JWT токеном.
+     *
+     * @param string $token JWT токен
+     * @return JsonResponse
+     */
+    protected function respondWithToken(string $token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,
@@ -99,7 +140,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function me()
+    /**
+     * Получить данные текущего пользователя.
+     *
+     * @return JsonResponse
+     */
+    public function me(): JsonResponse
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
@@ -108,4 +154,14 @@ class AuthController extends Controller
             return response()->json(['error' => 'Token invalid or expired'], 401);
         }
     }
+
+        // public function logoutAllDevices(Request $request)
+    // {
+    //     $user = auth()->user();
+
+    //     $this->authService->revokeAllAccessTokens($user); // 🔥 Убить все access токены
+    //     $this->authService->revokeAllUserRefreshTokens($user); // 🧹 Очистить refresh токены
+
+    //     return response()->json(['message' => 'Logged out from all devices']);
+    // }
 }

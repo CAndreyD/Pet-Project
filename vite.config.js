@@ -9,7 +9,7 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     hmr: {
-      host: 'localhost', // если на Windows запускаешь браузер
+      host: 'localhost', 
       protocol: 'ws'
     },
     proxy: {
@@ -26,7 +26,7 @@ export default defineConfig({
       input: ['resources/css/app.css', 'resources/js/app.js'],
       refresh: true,
     }),
-    vue(), // обязательно для .vue компонентов
+    vue(), 
   ],
   resolve: {
     alias: {

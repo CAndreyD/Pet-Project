@@ -38,7 +38,7 @@ RUN --mount=type=cache,target=/root/.npm \
 # --- Копируем весь проект ---
 COPY . .
 
-# --- Создание tailwind.config.js вручную (если нужно) ---
+# --- Создание tailwind.config.js вручную---
 # COPY tailwind.config.js postcss.config.js ./  
 
 # --- Права ---

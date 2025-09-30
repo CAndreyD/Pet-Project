@@ -11,24 +11,37 @@ use App\Services\Category\CategoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * Контроллер для управления категориями товаров.
+ */
 class CategoryController extends Controller
 {
-    public function __construct(private CategoryService $categoryService)
-    {
-    }
+    /**
+     * CategoryController constructor.
+     *
+     * @param CategoryService $categoryService Сервис для работы с категориями
+     */
+    public function __construct(private CategoryService $categoryService) {}
 
     /**
      * Получить список категорий (с вложенными).
+     *
+     * @return AnonymousResourceCollection<\App\Http\Resources\Category\CategoryResource>
      */
     public function index(): AnonymousResourceCollection
     {
-        $categories = Category::with('children')->paginate(15);
+        $categories = Category::with(['childrenRecursive', 'products'])
+            ->whereNull('parent_id') // только корневые
+            ->paginate(10); // <- вместо get()
 
         return CategoryResource::collection($categories);
     }
 
     /**
      * Создать новую категорию.
+     *
+     * @param CategoryStoreRequest $request Запрос с валидированными данными
+     * @return JsonResponse
      */
     public function store(CategoryStoreRequest $request): JsonResponse
     {
@@ -41,21 +54,24 @@ class CategoryController extends Controller
     }
 
     /**
-     * Показать одну категорию (рекурсивно с потомками).
+     * Показать одну категорию с рекурсивными потомками.
+     *
+     * @param Category $category Модель категории
+     * @return JsonResponse
      */
-    public function show(Category $category)
+    public function show(Category $category): JsonResponse
     {
-        // Загружаем рекурсивно детей
         $category->load('childrenRecursive');
 
-        // Возвращаем json
         return response()->json($category);
     }
 
-
-
     /**
      * Обновить категорию.
+     *
+     * @param CategoryUpdateRequest $request Запрос с валидированными данными
+     * @param Category $category Модель категории для обновления
+     * @return JsonResponse
      */
     public function update(CategoryUpdateRequest $request, Category $category): JsonResponse
     {
@@ -68,7 +84,10 @@ class CategoryController extends Controller
     }
 
     /**
-     * Удалить категорию и всех потомков.
+     * Удалить категорию и всех её потомков.
+     *
+     * @param Category $category Модель категории для удаления
+     * @return JsonResponse
      */
     public function destroy(Category $category): JsonResponse
     {

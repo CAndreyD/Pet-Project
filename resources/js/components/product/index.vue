@@ -24,6 +24,14 @@
       <!-- Количество -->
       <input v-model.number="form.quantity" type="number" step="1" min="0" placeholder="Количество" />
 
+      <!-- Категория -->
+      <select v-model="form.category_id" class="form-select">
+        <option disabled value="">-- Выберите категорию --</option>
+        <option v-for="c in categories" :key="c.id" :value="c.id">
+          {{ c.name }}
+        </option>
+      </select>
+
       <!-- Кнопки сохранить/отмена -->
       <div>
         <button @click="submitForm" class="btn-save">
@@ -43,22 +51,32 @@
         <div class="product-info">
           <strong>{{ product.name }}</strong>
 
-          <!-- Описание с возможностью развернуть/свернуть -->
-          <div v-if="product.description" class="description-box" :ref="el => (descRefs[product.id] = el)"
-            :style="{ maxHeight: heights[product.id] + 'px' }">
+          <!-- Описание -->
+          <div
+            v-if="product.description"
+            class="description-box"
+            :ref="el => (descRefs[product.id] = el)"
+            :style="{ maxHeight: heights[product.id] + 'px' }"
+          >
             {{ product.description }}
           </div>
-          <button v-if="product.description && product.description.length > 100" @click="toggleDescription(product.id)"
-            class="btn-toggle">
+          <button
+            v-if="product.description && product.description.length > 100"
+            @click="toggleDescription(product.id)"
+            class="btn-toggle"
+          >
             {{ expanded[product.id] ? 'Свернуть' : 'Развернуть' }}
           </button>
 
-
           <br />
           Цена: {{ product.price }} | Кол-во: {{ product.quantity }}
+          <br />
+          Категория:
+          <span v-if="product.category">{{ product.category.name }}</span>
+          <span v-else>-</span>
         </div>
 
-        <!-- Правая часть: кнопки -->
+        <!-- Кнопки справа -->
         <div class="product-actions">
           <button @click="editProduct(product)" class="btn-edit" title="Редактировать">🖉</button>
           <button @click="deleteProduct(product.id)" class="btn-delete" title="Удалить">🗑️</button>
@@ -77,21 +95,21 @@ import axios from 'axios'
 import AuthStatus from '@/components/auth/AuthStatus.vue'
 import { useAuthStore } from '@/../stores/auth'
 
-const heights = reactive({})  // для хранения текущей высоты каждого описания
-const descRefs = reactive({}) // refs к блокам описаний
-
+const heights = reactive({})
+const descRefs = reactive({})
+const expanded = reactive({})
 
 const auth = useAuthStore()
 const authHeaders = () => ({ headers: { Authorization: `Bearer ${auth.token}` } })
 
 const showForm = ref(false)
 const products = ref([])
-const form = ref({ id: null, name: '', description: '', price: 0, quantity: 0 })
-const expanded = reactive({}) // Для списка товаров
+const categories = ref([])
+const form = ref({ id: null, name: '', description: '', price: 0, quantity: 0, category_id: '' })
 const error = ref(null)
 const message = ref(null)
 
-// ---------- Загрузка товаров ----------
+// ---------- Загрузка данных ----------
 onMounted(async () => {
   await auth.loadFromStorage()
   if (!auth.isAuthenticated || !auth.token) {
@@ -100,15 +118,20 @@ onMounted(async () => {
   }
 
   try {
-    const res = await axios.get('/api/products', authHeaders())
-    products.value = res.data.data
+    const [prodRes, catRes] = await Promise.all([
+      axios.get('/api/products', authHeaders()),
+      axios.get('/api/categories', authHeaders())
+    ])
+    products.value = prodRes.data.data
+    categories.value = catRes.data.data
+
     products.value.forEach(p => {
       expanded[p.id] = false
-      heights[p.id] = 48 // или любая высота свернутого блока
+      heights[p.id] = 48
     })
   } catch (err) {
     console.error(err)
-    error.value = 'Ошибка при загрузке товаров'
+    error.value = 'Ошибка при загрузке данных'
   }
 })
 
@@ -117,7 +140,7 @@ const submitForm = async () => {
   error.value = null
   message.value = null
 
-  if (!form.value.name || form.value.price < 0 || form.value.quantity < 0) {
+  if (!form.value.name || form.value.price < 0 || form.value.quantity < 0 || !form.value.category_id) {
     error.value = 'Заполните все поля корректно'
     return
   }
@@ -145,7 +168,7 @@ const submitForm = async () => {
 
 // ---------- Очистка формы ----------
 const resetForm = () => {
-  form.value = { id: null, name: '', description: '', price: 0, quantity: 0 }
+  form.value = { id: null, name: '', category_id: 0, description: '', price: 0, quantity: 0 }
   showForm.value = false
   error.value = null
   message.value = null
@@ -153,17 +176,19 @@ const resetForm = () => {
 
 // ---------- Редактирование ----------
 const editProduct = (product) => {
-  form.value = { ...product }
+  form.value = {
+    id: product.id,
+    name: product.name,
+    category_id: product.category_id || 0,
+    description: product.description,
+    price: product.price,
+    quantity: product.quantity
+  }
   showForm.value = true
 }
 
 // ---------- Удаление ----------
 const deleteProduct = async (id) => {
-  if (!auth.isAuthenticated || !auth.token) {
-    error.value = 'Не авторизован'
-    return
-  }
-
   try {
     await axios.delete(`/api/products/${id}`, authHeaders())
     products.value = products.value.filter(p => p.id !== id)
@@ -178,13 +203,13 @@ const deleteProduct = async (id) => {
 // ---------- Развернуть / Свернуть описание ----------
 const toggleDescription = async (id) => {
   expanded[id] = !expanded[id]
-  await nextTick() // дождаться обновления DOM
+  await nextTick()
 
   const el = descRefs[id]
   if (expanded[id]) {
-    heights[id] = el.scrollHeight  // развернуть до полной высоты
+    heights[id] = el.scrollHeight
   } else {
-    heights[id] = 48               // свернуть обратно
+    heights[id] = 48
   }
 }
 </script>
@@ -237,7 +262,6 @@ button:hover {
   height: 32px;
   padding: 0;
   font-size: 18px;
-  /* размер иконки */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -255,7 +279,6 @@ button:hover {
   color: white;
 }
 
-
 .btn-toggle {
   background: none;
   border: none;
@@ -267,6 +290,7 @@ button:hover {
 }
 
 .form-box input,
+.form-box select,
 .form-textarea {
   width: 100%;
   padding: 8px;
@@ -303,7 +327,6 @@ button:hover {
   margin-bottom: 4px;
 }
 
-/* Ограничение по высоте для описания в списке товаров */
 .description-box {
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -311,40 +334,8 @@ button:hover {
   background-color: #f9f9f9;
   overflow: hidden;
   transition: max-height 0.3s ease;
-
-  /* новые свойства для переноса текста */
   white-space: pre-wrap;
-  /* сохраняет реальные переносы \n */
   word-break: break-word;
-  /* переносит длинные слова */
   overflow-wrap: break-word;
-  /* дополнительная защита */
-}
-
-
-
-
-.description-box.collapsed {
-  max-height: 48px;
-  /* свернуто */
-}
-
-.description-box:not(.collapsed) {
-  max-height: none;
-  /* развернуто — весь текст виден */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  /* лёгкая внешняя тень при раскрытии */
-}
-
-.message {
-  margin-bottom: 8px;
-}
-
-.error {
-  color: red;
-}
-
-.success {
-  color: green;
 }
 </style>

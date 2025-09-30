@@ -40,21 +40,21 @@ const backlog = ref([
       { name: 'Authorization', done: true, route: '/auth' },
       { name: 'CRUD: Product', done: true, route: '/products' },
       { name: 'CRUD: Category', done: true, route: '/categories' },
-      { name: 'CRUD: Supplier', done: true, route: '/suppliers' },
-      { name: 'Shipments', done: true, route: '/shipments' },
-      { name: 'StockMovement', done: true, route: '/stock-movements' }
-    ]
-  },
-  {
-    title: 'Nice-to-have',
-    done: false,
-    tasks: [
-      { name: 'Импорт товаров из Excel', done: false },
-      { name: 'Логирование действий', done: false },
-      { name: 'Интеграция Telegram уведомлений', done: false },
-      { name: 'Линты', done: false }
+      // { name: 'CRUD: Supplier', done: false, route: '/suppliers' },
+      // { name: 'Shipments', done: false, route: '/shipments' },
+      // { name: 'StockMovement', done: false, route: '/stock-movements' }
     ]
   }
+  // {
+  //   title: 'Nice-to-have',
+  //   done: false,
+  //   tasks: [
+  //     { name: 'Импорт товаров из Excel', done: false },
+  //     { name: 'Логирование действий', done: false },
+  //     { name: 'Интеграция Telegram уведомлений', done: false },
+  //     { name: 'Линты', done: false }
+  //   ]
+  // }
 ])
 
 function toggleDone(item) {

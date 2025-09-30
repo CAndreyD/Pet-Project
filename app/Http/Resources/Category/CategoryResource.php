@@ -13,6 +13,13 @@ class CategoryResource extends JsonResource
             'name'       => $this->name,
             'parent_id'  => $this->parent_id,
             'children'   => CategoryResource::collection($this->whenLoaded('childrenRecursive')),
+            'products'   => $this->products->map(function ($p) {
+                return [
+                    'id' => $p->id,
+                    'name' => $p->name,
+                    'price' => $p->price,
+                ];
+            }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
