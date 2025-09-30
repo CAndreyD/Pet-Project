@@ -27,8 +27,11 @@ jobs:
       - name: Install Node dependencies
         run: docker compose exec app npm ci --no-audit --no-progress
 
-      - name: Run migrations
+      - name: Run migrations for main DB
         run: docker compose exec app php artisan migrate --force
+
+      - name: Run migrations for test DB
+        run: docker compose exec app php artisan migrate --force --env=testing
 
       - name: Run tests
         run: docker compose exec app php artisan test --testsuite=Feature
