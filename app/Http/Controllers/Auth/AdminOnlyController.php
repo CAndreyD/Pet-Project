@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * Контроллер для действий, доступных только администраторам.
@@ -28,8 +28,6 @@ class AdminOnlyController extends Controller
 
     /**
      * Получить список ресурсов (заглушка).
-     *
-     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
@@ -39,8 +37,7 @@ class AdminOnlyController extends Controller
     /**
      * Показать конкретный ресурс по ID (заглушка).
      *
-     * @param int|string $id ID ресурса
-     * @return JsonResponse
+     * @param  int|string  $id  ID ресурса
      */
     public function show($id): JsonResponse
     {
@@ -50,8 +47,7 @@ class AdminOnlyController extends Controller
     /**
      * Создать новый ресурс (заглушка).
      *
-     * @param Request $request Входящие данные
-     * @return JsonResponse
+     * @param  Request  $request  Входящие данные
      */
     public function store(Request $request): JsonResponse
     {
@@ -61,9 +57,8 @@ class AdminOnlyController extends Controller
     /**
      * Обновить существующий ресурс по ID (заглушка).
      *
-     * @param Request $request Входящие данные
-     * @param int|string $id ID ресурса
-     * @return JsonResponse
+     * @param  Request  $request  Входящие данные
+     * @param  int|string  $id  ID ресурса
      */
     public function update(Request $request, $id): JsonResponse
     {
@@ -73,8 +68,7 @@ class AdminOnlyController extends Controller
     /**
      * Удалить ресурс по ID (заглушка).
      *
-     * @param int|string $id ID ресурса
-     * @return JsonResponse
+     * @param  int|string  $id  ID ресурса
      */
     public function destroy($id): JsonResponse
     {

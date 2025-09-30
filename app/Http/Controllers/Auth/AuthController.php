@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Services\Auth\AuthService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Http\JsonResponse;
 
 /**
  * Контроллер аутентификации.
@@ -23,15 +23,14 @@ class AuthController extends Controller
     /**
      * AuthController constructor.
      *
-     * @param AuthService $authService Сервис для работы с аутентификацией
+     * @param  AuthService  $authService  Сервис для работы с аутентификацией
      */
     public function __construct(protected AuthService $authService) {}
 
     /**
      * Регистрация нового пользователя.
      *
-     * @param RegisterRequest $request Валидированные данные регистрации
-     * @return JsonResponse
+     * @param  RegisterRequest  $request  Валидированные данные регистрации
      */
     public function register(RegisterRequest $request): JsonResponse
     {
@@ -49,12 +48,11 @@ class AuthController extends Controller
     /**
      * Вход пользователя (логин).
      *
-     * @param LoginRequest $request Валидированные данные для входа
-     * @return JsonResponse
+     * @param  LoginRequest  $request  Валидированные данные для входа
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        if (!$token = $this->authService->login($request->validated())) {
+        if (! $token = $this->authService->login($request->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -63,8 +61,6 @@ class AuthController extends Controller
 
     /**
      * Выход пользователя (удаление текущего токена).
-     *
-     * @return JsonResponse
      */
     public function logout(): JsonResponse
     {
@@ -75,8 +71,6 @@ class AuthController extends Controller
 
     /**
      * Обновление access токена.
-     *
-     * @return JsonResponse
      */
     public function refresh(): JsonResponse
     {
@@ -88,8 +82,8 @@ class AuthController extends Controller
     /**
      * Отправка ссылки для сброса пароля на email.
      *
-     * @param ForgotPasswordRequest $request Валидированный email
-     * @return JsonResponse
+     * @param  ForgotPasswordRequest  $request  Валидированный email
+     *
      * @throws ValidationException
      */
     public function sendResetLinkEmail(ForgotPasswordRequest $request): JsonResponse
@@ -108,8 +102,8 @@ class AuthController extends Controller
     /**
      * Сброс пароля по ссылке.
      *
-     * @param ResetPasswordRequest $request Валидированные данные для сброса
-     * @return JsonResponse
+     * @param  ResetPasswordRequest  $request  Валидированные данные для сброса
+     *
      * @throws ValidationException
      */
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
@@ -128,8 +122,7 @@ class AuthController extends Controller
     /**
      * Формирование ответа с JWT токеном.
      *
-     * @param string $token JWT токен
-     * @return JsonResponse
+     * @param  string  $token  JWT токен
      */
     protected function respondWithToken(string $token): JsonResponse
     {
@@ -142,20 +135,19 @@ class AuthController extends Controller
 
     /**
      * Получить данные текущего пользователя.
-     *
-     * @return JsonResponse
      */
     public function me(): JsonResponse
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
+
             return response()->json($user);
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json(['error' => 'Token invalid or expired'], 401);
         }
     }
 
-        // public function logoutAllDevices(Request $request)
+    // public function logoutAllDevices(Request $request)
     // {
     //     $user = auth()->user();
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\StockMovement;
 
 use App\Models\StockMovement;

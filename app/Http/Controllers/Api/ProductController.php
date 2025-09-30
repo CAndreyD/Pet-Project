@@ -19,7 +19,7 @@ class ProductController extends Controller
     /**
      * ProductController constructor.
      *
-     * @param ProductService $productService Сервис для работы с товарами
+     * @param  ProductService  $productService  Сервис для работы с товарами
      */
     public function __construct(private ProductService $productService) {}
 
@@ -33,26 +33,26 @@ class ProductController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $products = Product::with('category')->paginate(15);
+
         return ProductResource::collection($products);
     }
 
     /**
      * Создать новый товар.
      *
-     * @param ProductStoreRequest $request Запрос с валидированными данными
-     * @return JsonResponse
+     * @param  ProductStoreRequest  $request  Запрос с валидированными данными
      */
     public function store(ProductStoreRequest $request): JsonResponse
     {
         $product = $this->productService->create($request->validated());
+
         return response()->json(new ProductResource($product), 201);
     }
 
     /**
      * Показать один товар.
      *
-     * @param Product $product Модель товара
-     * @return JsonResponse
+     * @param  Product  $product  Модель товара
      */
     public function show(Product $product): JsonResponse
     {
@@ -62,25 +62,25 @@ class ProductController extends Controller
     /**
      * Обновить товар.
      *
-     * @param ProductUpdateRequest $request Запрос с валидированными данными
-     * @param Product $product Модель товара для обновления
-     * @return JsonResponse
+     * @param  ProductUpdateRequest  $request  Запрос с валидированными данными
+     * @param  Product  $product  Модель товара для обновления
      */
     public function update(ProductUpdateRequest $request, Product $product): JsonResponse
     {
         $updated = $this->productService->update($product, $request->validated());
+
         return response()->json(new ProductResource($updated));
     }
 
     /**
      * Удалить товар.
      *
-     * @param Product $product Модель товара для удаления
-     * @return JsonResponse
+     * @param  Product  $product  Модель товара для удаления
      */
     public function destroy(Product $product): JsonResponse
     {
         $this->productService->delete($product);
+
         return response()->json(['message' => 'Deleted']);
     }
 }

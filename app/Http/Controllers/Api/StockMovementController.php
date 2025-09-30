@@ -32,8 +32,8 @@ class StockMovementController extends Controller
      *
      * Валидирует входные данные и сохраняет новое движение через сервис.
      *
-     * @param  StockMovementRequest  $request Запрос с валидированными данными.
-     * @param  StockMovementService  $service Сервис для работы с движениями.
+     * @param  StockMovementRequest  $request  Запрос с валидированными данными.
+     * @param  StockMovementService  $service  Сервис для работы с движениями.
      * @return StockMovementResource Ресурс созданного движения.
      */
     public function store(StockMovementRequest $request, StockMovementService $service)

@@ -2,11 +2,10 @@
 
 namespace Tests\Feature\Shipment;
 
+use App\Models\Product;
 use App\Models\Shipment;
 use App\Models\Supplier;
-use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class ShipmentCrudTest extends TestCase
@@ -27,7 +26,7 @@ class ShipmentCrudTest extends TestCase
                         'supplier' => ['id', 'name', 'created_at', 'updated_at'],
                         'shipment_date',
                         'products' => [
-                            '*' => ['id', 'name', 'quantity']
+                            '*' => ['id', 'name', 'quantity'],
                         ],
                         'created_at',
                     ],
@@ -109,15 +108,13 @@ class ShipmentCrudTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJson(
-                fn($json) =>
-                $json->where('id', $shipment->id)
+                fn ($json) => $json->where('id', $shipment->id)
                     ->where('shipment_date', $payload['shipment_date'])
                     ->where('supplier.id', $newSupplier->id)
                     ->where('supplier.name', $newSupplier->name)
                     ->has('products')
                     ->etc()
             );
-
 
         $this->assertDatabaseHas('shipments', [
             'id' => $shipment->id,
@@ -130,7 +127,6 @@ class ShipmentCrudTest extends TestCase
             'quantity' => 15,
         ]);
     }
-
 
     public function test_destroy_deletes_shipment()
     {

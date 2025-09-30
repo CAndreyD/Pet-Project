@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Docs\Schemas\StockMovementController;
 
 /**
@@ -7,6 +8,7 @@ namespace App\Docs\Schemas\StockMovementController;
  *     type="object",
  *     title="Перемещение на складе",
  *     required={"id", "product_id", "quantity", "movement_date"},
+ *
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="product_id", type="integer", example=10),
  *     @OA\Property(property="quantity", type="integer", example=100),
@@ -14,6 +16,4 @@ namespace App\Docs\Schemas\StockMovementController;
  *     @OA\Property(property="type", type="string", example="приход", nullable=true)
  * )
  */
-class StockMovement
-{
-}
+class StockMovement {}

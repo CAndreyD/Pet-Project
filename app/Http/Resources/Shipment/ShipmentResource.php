@@ -4,6 +4,7 @@ namespace App\Http\Resources\Shipment;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Carbon;
+
 class ShipmentResource extends JsonResource
 {
     public function toArray($request): array

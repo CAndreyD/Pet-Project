@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Docs;
 
 /**
@@ -6,6 +7,7 @@ namespace App\Docs;
  *     version="1.0.0",
  *     title="Warehouse API",
  *     description="Документация API для склада",
+ *
  *     @OA\Contact(
  *         email="support@example.com"
  *     )

@@ -17,13 +17,13 @@ class SupplierCrudTest extends TestCase
         $response = $this->actingAsApiUser()->getJson('/api/suppliers');
 
         $response->assertStatus(200)
-                 ->assertJsonStructure([
-                     'data' => [
-                         '*' => ['id', 'name', 'created_at', 'updated_at']
-                     ],
-                     'links',
-                     'meta',
-                 ]);
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => ['id', 'name', 'created_at', 'updated_at'],
+                ],
+                'links',
+                'meta',
+            ]);
     }
 
     public function test_store_creates_supplier()
@@ -33,7 +33,7 @@ class SupplierCrudTest extends TestCase
         $response = $this->actingAsApiUser()->postJson('/api/suppliers', $data);
 
         $response->assertStatus(201)
-                 ->assertJsonFragment(['name' => 'Test Supplier']);
+            ->assertJsonFragment(['name' => 'Test Supplier']);
 
         $this->assertDatabaseHas('suppliers', ['name' => 'Test Supplier']);
     }
@@ -45,7 +45,7 @@ class SupplierCrudTest extends TestCase
         $response = $this->actingAsApiUser()->getJson("/api/suppliers/{$supplier->id}");
 
         $response->assertStatus(200)
-                 ->assertJsonFragment(['name' => $supplier->name]);
+            ->assertJsonFragment(['name' => $supplier->name]);
     }
 
     public function test_update_changes_supplier()
@@ -56,7 +56,7 @@ class SupplierCrudTest extends TestCase
         $response = $this->actingAsApiUser()->putJson("/api/suppliers/{$supplier->id}", $data);
 
         $response->assertStatus(200)
-                 ->assertJsonFragment(['name' => 'New Name']);
+            ->assertJsonFragment(['name' => 'New Name']);
 
         $this->assertDatabaseHas('suppliers', ['id' => $supplier->id, 'name' => 'New Name']);
     }
@@ -68,7 +68,7 @@ class SupplierCrudTest extends TestCase
         $response = $this->actingAsApiUser()->deleteJson("/api/suppliers/{$supplier->id}");
 
         $response->assertStatus(200)
-                 ->assertJson(['message' => 'Deleted']);
+            ->assertJson(['message' => 'Deleted']);
 
         $this->assertDatabaseMissing('suppliers', ['id' => $supplier->id]);
     }

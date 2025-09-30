@@ -12,10 +12,9 @@ class AdminMiddleware
         // Пример: проверяем поле 'is_admin' в модели User
         $user = $request->user();
 
-        if (!$user || !$user->is_admin) {
+        if (! $user || ! $user->is_admin) {
             return response()->json(['message' => 'Forbidden — админ доступ только'], 403);
         }
-
 
         return $next($request);
     }

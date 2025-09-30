@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -37,8 +37,6 @@ class Category extends Model
 
     /**
      * Родительская категория.
-     *
-     * @return BelongsTo
      */
     public function parent(): BelongsTo
     {
@@ -47,8 +45,6 @@ class Category extends Model
 
     /**
      * Дочерние категории.
-     *
-     * @return HasMany
      */
     public function children(): HasMany
     {
@@ -57,8 +53,6 @@ class Category extends Model
 
     /**
      * Товары, принадлежащие категории.
-     *
-     * @return HasMany
      */
     public function products(): HasMany
     {
@@ -67,8 +61,6 @@ class Category extends Model
 
     /**
      * Рекурсивное удаление категории вместе с потомками.
-     *
-     * @return void
      */
     public function deleteWithChildren(): void
     {
@@ -81,8 +73,6 @@ class Category extends Model
 
     /**
      * Рекурсивная связь с дочерними категориями.
-     *
-     * @return HasMany
      */
     public function childrenRecursive(): HasMany
     {
@@ -91,9 +81,6 @@ class Category extends Model
 
     /**
      * Вычислить глубину категории по ID родителя.
-     *
-     * @param int|null $parentId
-     * @return int
      */
     public static function calculateDepth(?int $parentId): int
     {
@@ -101,7 +88,7 @@ class Category extends Model
 
         while ($parentId !== null) {
             $parent = self::find($parentId);
-            if (!$parent) {
+            if (! $parent) {
                 break;
             }
 

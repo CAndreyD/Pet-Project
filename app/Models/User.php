@@ -48,6 +48,7 @@ class User extends Authenticatable implements JWTSubject
             'password' => 'hashed',
         ];
     }
+
     /**
      * Получить идентификатор пользователя для JWT.
      */
@@ -65,5 +66,4 @@ class User extends Authenticatable implements JWTSubject
             'token_version' => $this->token_version,
         ];
     }
-
 }

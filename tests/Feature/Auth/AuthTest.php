@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
+use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
@@ -17,12 +17,12 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(201)
-                 ->assertJsonStructure([
-                     'user' => ['id', 'name', 'email', 'created_at', 'updated_at'],
-                     'access_token',
-                     'token_type',
-                     'expires_in',
-                 ]);
+            ->assertJsonStructure([
+                'user' => ['id', 'name', 'email', 'created_at', 'updated_at'],
+                'access_token',
+                'token_type',
+                'expires_in',
+            ]);
     }
 
     public function test_login()
@@ -38,7 +38,7 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonStructure(['access_token', 'token_type', 'expires_in']);
+            ->assertJsonStructure(['access_token', 'token_type', 'expires_in']);
     }
 
     public function test_login_fail()
@@ -49,6 +49,6 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(401)
-                 ->assertJson(['error' => 'Unauthorized']);
+            ->assertJson(['error' => 'Unauthorized']);
     }
 }

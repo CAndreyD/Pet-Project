@@ -25,4 +25,3 @@ class ProductStoreRequest extends FormRequest
         ];
     }
 }
-

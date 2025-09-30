@@ -9,11 +9,11 @@ class CategoryResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id'         => $this->id,
-            'name'       => $this->name,
-            'parent_id'  => $this->parent_id,
-            'children'   => CategoryResource::collection($this->whenLoaded('childrenRecursive')),
-            'products'   => $this->products->map(function ($p) {
+            'id' => $this->id,
+            'name' => $this->name,
+            'parent_id' => $this->parent_id,
+            'children' => CategoryResource::collection($this->whenLoaded('childrenRecursive')),
+            'products' => $this->products->map(function ($p) {
                 return [
                     'id' => $p->id,
                     'name' => $p->name,

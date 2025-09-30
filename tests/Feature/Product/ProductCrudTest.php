@@ -3,7 +3,6 @@
 namespace Tests\Feature\Product;
 
 use App\Models\Product;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -11,13 +10,13 @@ class ProductCrudTest extends TestCase
 {
     use RefreshDatabase;
 
-public function test_product_can_be_listed()
-{
-    Product::factory()->count(5)->create();
+    public function test_product_can_be_listed()
+    {
+        Product::factory()->count(5)->create();
 
-    $response = $this->actingAsApiUser()->getJson('/api/products');
-    $response->assertStatus(200)->assertJsonStructure(['data']);
-}
+        $response = $this->actingAsApiUser()->getJson('/api/products');
+        $response->assertStatus(200)->assertJsonStructure(['data']);
+    }
 
     public function test_product_can_be_created()
     {

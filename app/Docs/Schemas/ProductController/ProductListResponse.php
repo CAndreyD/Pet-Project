@@ -6,11 +6,14 @@ namespace App\Docs\Schemas\ProductController;
  * @OA\Schema(
  *     schema="ProductListResponse",
  *     type="object",
+ *
  *     @OA\Property(
  *         property="data",
  *         type="array",
+ *
  *         @OA\Items(ref="#/components/schemas/Product")
  *     ),
+ *
  *     @OA\Property(
  *         property="meta",
  *         type="object",
@@ -21,6 +24,4 @@ namespace App\Docs\Schemas\ProductController;
  *     )
  * )
  */
-class ProductListResponse
-{
-}
+class ProductListResponse {}

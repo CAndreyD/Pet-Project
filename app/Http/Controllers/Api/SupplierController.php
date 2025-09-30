@@ -18,7 +18,7 @@ class SupplierController extends Controller
     /**
      * SupplierController constructor.
      *
-     * @param SupplierService $supplierService Сервис для работы с поставщиками
+     * @param  SupplierService  $supplierService  Сервис для работы с поставщиками
      */
     public function __construct(protected SupplierService $supplierService) {}
 
@@ -32,26 +32,26 @@ class SupplierController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $suppliers = Supplier::paginate(15);
+
         return SupplierResource::collection($suppliers);
     }
 
     /**
      * Создать нового поставщика.
      *
-     * @param SupplierRequest $request Запрос с валидированными данными
-     * @return JsonResponse
+     * @param  SupplierRequest  $request  Запрос с валидированными данными
      */
     public function store(SupplierRequest $request): JsonResponse
     {
         $supplier = $this->supplierService->store($request->validated());
+
         return response()->json(new SupplierResource($supplier), 201);
     }
 
     /**
      * Показать одного поставщика.
      *
-     * @param Supplier $supplier Модель поставщика
-     * @return JsonResponse
+     * @param  Supplier  $supplier  Модель поставщика
      */
     public function show(Supplier $supplier): JsonResponse
     {
@@ -61,25 +61,25 @@ class SupplierController extends Controller
     /**
      * Обновить поставщика.
      *
-     * @param SupplierRequest $request Запрос с валидированными данными
-     * @param Supplier $supplier Модель поставщика для обновления
-     * @return JsonResponse
+     * @param  SupplierRequest  $request  Запрос с валидированными данными
+     * @param  Supplier  $supplier  Модель поставщика для обновления
      */
     public function update(SupplierRequest $request, Supplier $supplier): JsonResponse
     {
         $supplier = $this->supplierService->update($supplier, $request->validated());
+
         return response()->json(new SupplierResource($supplier));
     }
 
     /**
      * Удалить поставщика.
      *
-     * @param Supplier $supplier Модель поставщика для удаления
-     * @return JsonResponse
+     * @param  Supplier  $supplier  Модель поставщика для удаления
      */
     public function destroy(Supplier $supplier): JsonResponse
     {
         $this->supplierService->delete($supplier);
+
         return response()->json(['message' => 'Deleted']);
     }
 }

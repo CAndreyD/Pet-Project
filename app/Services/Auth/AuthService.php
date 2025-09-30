@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 /**
  * Сервис аутентификации.
@@ -22,8 +22,7 @@ class AuthService
     /**
      * Регистрация пользователя с хэшированием пароля.
      *
-     * @param array $data ['name' => string, 'email' => string, 'password' => string]
-     * @return User
+     * @param  array  $data  ['name' => string, 'email' => string, 'password' => string]
      */
     public function register(array $data): User
     {
@@ -37,22 +36,22 @@ class AuthService
     /**
      * Попытка логина, возвращает JWT токен или false.
      *
-     * @param array $credentials ['email' => string, 'password' => string]
-     * @return string|false
+     * @param  array  $credentials  ['email' => string, 'password' => string]
      */
     public function login(array $credentials): string|false
     {
         try {
-            if (!$token = JWTAuth::attempt($credentials)) {
+            if (! $token = JWTAuth::attempt($credentials)) {
                 Log::warning('Failed login attempt', [
                     'email' => $credentials['email'] ?? 'unknown',
                     'ip' => request()->ip(),
                     'time' => now()->toDateTimeString(),
                 ]);
+
                 return false;
             }
 
-            $user = JWTAuth::user(); 
+            $user = JWTAuth::user();
 
             Log::info('Successful login', [
                 'user_id' => $user->id ?? null,
@@ -69,14 +68,13 @@ class AuthService
                 'ip' => request()->ip(),
                 'time' => now()->toDateTimeString(),
             ]);
+
             return false;
         }
     }
 
     /**
      * Логаут пользователя - инвалидирует текущий JWT токен.
-     *
-     * @return void
      */
     public function logout(): void
     {
@@ -95,8 +93,6 @@ class AuthService
 
     /**
      * Получить текущего пользователя из токена.
-     *
-     * @return User|null
      */
     public function user(): ?User
     {
@@ -110,7 +106,6 @@ class AuthService
     /**
      * Отправить ссылку для сброса пароля на email.
      *
-     * @param string $email
      * @return string Статус отправки
      */
     public function sendResetLink(string $email)
@@ -121,7 +116,7 @@ class AuthService
     /**
      * Сбросить пароль по токену сброса.
      *
-     * @param array $data ['token' => string, 'email' => string, 'password' => string, 'password_confirmation' => string]
+     * @param  array  $data  ['token' => string, 'email' => string, 'password' => string, 'password_confirmation' => string]
      * @return string Статус сброса пароля
      */
     public function resetPassword(array $data)
@@ -130,7 +125,7 @@ class AuthService
             $data,
             function (User $user, string $password) {
                 $user->forceFill([
-                    'password' => Hash::make($password)
+                    'password' => Hash::make($password),
                 ])->save();
 
                 $this->revokeAllAccessTokens($user);
@@ -141,9 +136,6 @@ class AuthService
 
     /**
      * Генерирует новый refresh токен для пользователя.
-     *
-     * @param User $user
-     * @return RefreshToken
      */
     public function generateRefreshToken(User $user): RefreshToken
     {
@@ -156,21 +148,16 @@ class AuthService
 
     /**
      * Получить действительный refresh токен по строке.
-     *
-     * @param string $token
-     * @return RefreshToken|null
      */
     public function getValidRefreshToken(string $token): ?RefreshToken
     {
         $refreshToken = RefreshToken::where('token', $token)->first();
+
         return $refreshToken && $refreshToken->isValid() ? $refreshToken : null;
     }
 
     /**
      * Отозвать refresh токен.
-     *
-     * @param string $token
-     * @return void
      */
     public function revokeRefreshToken(string $token): void
     {
@@ -179,9 +166,6 @@ class AuthService
 
     /**
      * Отозвать все refresh токены пользователя.
-     *
-     * @param User $user
-     * @return void
      */
     public function revokeAllUserRefreshTokens(User $user): void
     {
@@ -190,9 +174,6 @@ class AuthService
 
     /**
      * Инкремент версии токена пользователя, что приведет к отзыву всех access токенов.
-     *
-     * @param User $user
-     * @return void
      */
     public function revokeAllAccessTokens(User $user): void
     {
@@ -202,14 +183,13 @@ class AuthService
     /**
      * Обновление access и refresh токена по старому refresh токену.
      *
-     * @param string $refreshToken
      * @return array{access_token: string, refresh_token: string}|false
      */
     public function refreshTokens(string $refreshToken): array|false
     {
         $record = RefreshToken::where('token', $refreshToken)->first();
 
-        if (!$record || !$record->isValid()) {
+        if (! $record || ! $record->isValid()) {
             return false;
         }
 

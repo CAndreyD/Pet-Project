@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Category;
 
 use App\Models\Category;
@@ -15,8 +16,8 @@ class CategoryService
      *
      * Проверяет глубину вложенности, чтобы не превышать MAX_DEPTH.
      *
-     * @param array $data Данные категории ['name' => string, 'parent_id' => int|null, ...]
-     * @return Category
+     * @param  array  $data  Данные категории ['name' => string, 'parent_id' => int|null, ...]
+     *
      * @throws \Exception Если глубина вложенности превышает MAX_DEPTH
      */
     public function create(array $data): Category
@@ -24,7 +25,7 @@ class CategoryService
         $depth = Category::calculateDepth($data['parent_id'] ?? null);
 
         if ($depth >= Category::MAX_DEPTH) {
-            throw new \Exception("Максимальная вложенность категорий — " . Category::MAX_DEPTH);
+            throw new \Exception('Максимальная вложенность категорий — '.Category::MAX_DEPTH);
         }
 
         return Category::create($data);
@@ -35,9 +36,8 @@ class CategoryService
      *
      * Проверяет новую глубину вложенности, если изменяется parent_id.
      *
-     * @param Category $category
-     * @param array $data Данные для обновления
-     * @return Category
+     * @param  array  $data  Данные для обновления
+     *
      * @throws \Exception Если новая глубина вложенности превышает MAX_DEPTH
      */
     public function update(Category $category, array $data): Category
@@ -46,19 +46,17 @@ class CategoryService
             $depth = Category::calculateDepth($data['parent_id']);
 
             if ($depth >= Category::MAX_DEPTH) {
-                throw new \Exception("Максимальная вложенность категорий — " . Category::MAX_DEPTH);
+                throw new \Exception('Максимальная вложенность категорий — '.Category::MAX_DEPTH);
             }
         }
 
         $category->update($data);
+
         return $category;
     }
 
     /**
      * Удалить категорию вместе со всеми её потомками.
-     *
-     * @param Category $category
-     * @return void
      */
     public function delete(Category $category): void
     {

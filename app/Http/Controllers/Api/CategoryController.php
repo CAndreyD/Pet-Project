@@ -19,7 +19,7 @@ class CategoryController extends Controller
     /**
      * CategoryController constructor.
      *
-     * @param CategoryService $categoryService Сервис для работы с категориями
+     * @param  CategoryService  $categoryService  Сервис для работы с категориями
      */
     public function __construct(private CategoryService $categoryService) {}
 
@@ -40,8 +40,7 @@ class CategoryController extends Controller
     /**
      * Создать новую категорию.
      *
-     * @param CategoryStoreRequest $request Запрос с валидированными данными
-     * @return JsonResponse
+     * @param  CategoryStoreRequest  $request  Запрос с валидированными данными
      */
     public function store(CategoryStoreRequest $request): JsonResponse
     {
@@ -56,8 +55,7 @@ class CategoryController extends Controller
     /**
      * Показать одну категорию с рекурсивными потомками.
      *
-     * @param Category $category Модель категории
-     * @return JsonResponse
+     * @param  Category  $category  Модель категории
      */
     public function show(Category $category): JsonResponse
     {
@@ -69,9 +67,8 @@ class CategoryController extends Controller
     /**
      * Обновить категорию.
      *
-     * @param CategoryUpdateRequest $request Запрос с валидированными данными
-     * @param Category $category Модель категории для обновления
-     * @return JsonResponse
+     * @param  CategoryUpdateRequest  $request  Запрос с валидированными данными
+     * @param  Category  $category  Модель категории для обновления
      */
     public function update(CategoryUpdateRequest $request, Category $category): JsonResponse
     {
@@ -86,8 +83,7 @@ class CategoryController extends Controller
     /**
      * Удалить категорию и всех её потомков.
      *
-     * @param Category $category Модель категории для удаления
-     * @return JsonResponse
+     * @param  Category  $category  Модель категории для удаления
      */
     public function destroy(Category $category): JsonResponse
     {

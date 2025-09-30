@@ -10,7 +10,6 @@ abstract class TestCase extends BaseTestCase
 {
     // В tests/TestCase.php
 
-
     protected function actingAsApiUser($user = null)
     {
         $user = $user ?: User::factory()->create();

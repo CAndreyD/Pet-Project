@@ -37,7 +37,7 @@ jobs:
         run: docker compose exec app php artisan test --testsuite=Feature
 
       - name: Run PHPStan static analysis
-        run: docker compose exec app vendor/bin/phpstan analyse
+        run: docker compose exec app vendor/bin/phpstan analyse --memory-limit=512M
 
       - name: Run Laravel Pint code style check
         run: docker compose exec app vendor/bin/pint --test
