@@ -10,7 +10,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Compose
+      - name: Build and start Docker containers
         run: docker compose up -d --build
 
       - name: Wait for MySQL to be ready
@@ -20,6 +20,12 @@ jobs:
             echo "Waiting for MySQL..."
             sleep 2
           done
+
+      - name: Install PHP dependencies
+        run: docker compose exec app composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Install Node dependencies
+        run: docker compose exec app npm ci --no-audit --no-progress
 
       - name: Run migrations
         run: docker compose exec app php artisan migrate --force
@@ -36,4 +42,4 @@ jobs:
       - name: Generate Swagger docs and check changes
         run: |
           docker compose exec app php artisan l5-swagger:generate
-          git diff --exit-code public/docs/swagger.json
+          git diff --exit-code storage/api-docs/api-docs.json
