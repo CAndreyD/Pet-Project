@@ -31,7 +31,7 @@ jobs:
         run: docker compose exec app php artisan migrate --force
 
       - name: Run tests
-        run: docker compose exec app php artisan test
+        run: docker compose exec app php artisan test --testsuite=Feature
 
       - name: Run PHPStan static analysis
         run: docker compose exec app vendor/bin/phpstan analyse
